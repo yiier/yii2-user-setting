@@ -99,7 +99,7 @@ class UserSettingModel extends \yii\db\ActiveRecord
     public function afterDelete()
     {
         parent::afterDelete();
-        Yii::$app->settings->invalidateCache();
+        Yii::$app->userSetting->invalidateCache();
     }
 
     /**
@@ -108,7 +108,7 @@ class UserSettingModel extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        Yii::$app->settings->invalidateCache();
+        Yii::$app->userSetting->invalidateCache();
     }
 
     /**

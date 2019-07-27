@@ -7,7 +7,6 @@
 
 namespace yiier\userSetting;
 
-
 use Yii;
 use yii\base\Action;
 
@@ -31,7 +30,9 @@ class UserSettingAction extends Action
     /**
      * @var string name on section. Default is ModelClass formname
      */
-    public $section = null;
+    public $userId = null;
+
+    public $successMessage = 'Successfully saved setting';
 
     /**
      * Render the setting form.
@@ -40,21 +41,18 @@ class UserSettingAction extends Action
     {
         /* @var $model \yii\db\ActiveRecord */
         $model = new $this->modelClass();
-        $section = ($this->section !== null) ? $this->section : $model->formName();
+        $userId = ($this->userId !== null) ? $this->userId : Yii::$app->user->id;
         if ($this->scenario) {
             $model->setScenario($this->scenario);
         }
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             foreach ($model->toArray() as $key => $value) {
-                Yii::$app->setting->set($key, $value, $section);
+                Yii::$app->userSetting->set($key, $value, $userId, $model->getAttributeLabel($key));
             }
-            Yii::$app->getSession()->addFlash(
-                'success',
-                Yii::t('setting', 'Successfully saved setting')
-            );
+            Yii::$app->getSession()->addFlash('success', Yii::t('app', $this->successMessage));
         }
         foreach ($model->attributes() as $key) {
-            $model->{$key} = Yii::$app->setting->get($key, $section);
+            $model->{$key} = Yii::$app->userSetting->get($key, $userId);
         }
         return $this->controller->render($this->viewName, ['model' => $model]);
     }

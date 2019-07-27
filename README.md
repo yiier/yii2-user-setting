@@ -31,7 +31,7 @@ Before usage this extension, we'll also need to prepare the database.
 
 
 ```
-php yii migrate --migrationPath=@vendor/yiier/userSettings/src/migrations/
+php yii migrate --migrationPath=@yiier/userSetting/migrations/
 ```
 
 
@@ -56,7 +56,7 @@ To use the Setting Component, you need to configure the components array in your
 
 ```php
 'components' => [
-    'setting' => [
+    'userSetting' => [
         'class' => 'yiier\userSetting\UserSetting',
     ],
 ],
@@ -67,7 +67,7 @@ Usage
 
 ```php
 <?php
-$setting = Yii::$app->setting;
+$setting = Yii::$app->userSetting;
 
 $value = $setting->get('key');
 $value = $setting->get('key', Yii::$app->user->id);
@@ -102,6 +102,89 @@ $setting->removeAll(Yii::$app->user->id);
 $setting->getAllByUserId(Yii::$app->user->id);
 
 $setting->invalidateCache(); // automatically called on set(), remove();
+```
+
+
+UserSettingAction
+-----
+
+To use a custom settings form, you can use the included `UserSettingAction`.
+
+1. Create a model class with your validation rules.
+2. Create an associated view with an `ActiveForm` containing all the settings you need.
+3. Add `yiier\userSetting\UserSettingAction` to the controller's actions.
+
+The settings will be stored in section taken from the form name, with the key being the field name.
+
+### Model:
+
+```php
+<?php 
+class SiteForm extends Model 
+{
+	
+	public $siteName, $siteDescription;
+	
+	public function rules()
+	{
+		return [
+			[['siteName', 'siteDescription'], 'string'],
+		];
+	}
+	
+	public function fields()
+	{
+        return ['siteName', 'siteDescription'];
+	}
+	
+	public function attributes()
+	{
+        return ['siteName', 'siteDescription'];
+	}
+    
+    public function attributeLabels()
+	{
+        return [
+            'siteName' => 'Site Name', 
+            'siteDescription' => 'Site Description'
+        ];
+	}
+
+}
+```
+
+### Views:
+
+
+```php
+<?php $form = ActiveForm::begin(['id' => 'site-settings-form']); ?>
+
+<?= $form->field($model, 'siteName') ?>
+<?= $form->field($model, 'siteDescription') ?>
+<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+
+<?php ActiveForm::end(); ?>
+
+```
+
+### Controller:
+
+```php
+public function actions() 
+{
+   return [
+   		//....
+            'site-settings' => [
+                'class' => UserSettingAction::class,
+                'modelClass' => 'app\models\SiteForm',
+                //'scenario' => 'site',	// Change if you want to re-use the model for multiple setting form.
+                //'userId' => 0', // By default use \Yii::$app->user->id
+                'viewName' => 'site-settings',	// The form we need to render
+                'successMessage' => '保存成功'
+            ],
+        //....
+    ];
+}
 ```
 
 
