@@ -2,6 +2,11 @@ User Settings For Yii2
 ======================
 User Settings For Yii2
 
+[![Latest Stable Version](https://poser.pugx.org/yiier/yii2-user-setting/v/stable)](https://packagist.org/packages/yiier/yii2-user-setting) 
+[![Total Downloads](https://poser.pugx.org/yiier/yii2-user-setting/downloads)](https://packagist.org/packages/yiier/yii2-user-setting) 
+[![Latest Unstable Version](https://poser.pugx.org/yiier/yii2-user-setting/v/unstable)](https://packagist.org/packages/yiier/yii2-user-setting) 
+[![License](https://poser.pugx.org/yiier/yii2-user-setting/license)](https://packagist.org/packages/yiier/yii2-user-setting)
+
 Installation
 ------------
 
