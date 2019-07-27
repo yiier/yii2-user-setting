@@ -109,3 +109,4 @@ Reference
 -----
 
 - [yii2mod/yii2-settings](https://github.com/yii2mod/yii2-settings)
+- [phemellc/yii2-settings](https://github.com/phemellc/yii2-settings)
