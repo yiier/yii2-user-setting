@@ -124,36 +124,36 @@ The settings will be stored in section taken from the form name, with the key be
 ### Model:
 
 ```php
-<?php 
-class SiteForm extends Model 
+<?php
+class SiteForm extends Model
 {
-	
-	public $siteName, $siteDescription;
-	
-	public function rules()
-	{
-		return [
-			[['siteName', 'siteDescription'], 'string'],
-		];
-	}
-	
-	public function fields()
-	{
-        return ['siteName', 'siteDescription'];
-	}
-	
-	public function attributes()
-	{
-        return ['siteName', 'siteDescription'];
-	}
-    
-    public function attributeLabels()
-	{
+
+    public $siteName, $siteDescription;
+
+    public function rules()
+    {
         return [
-            'siteName' => 'Site Name', 
+            [['siteName', 'siteDescription'], 'string'],
+        ];
+    }
+
+    public function fields()
+    {
+        return ['siteName', 'siteDescription'];
+    }
+
+    public function attributes()
+    {
+        return ['siteName', 'siteDescription'];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'siteName' => 'Site Name',
             'siteDescription' => 'Site Description'
         ];
-	}
+    }
 
 }
 ```
