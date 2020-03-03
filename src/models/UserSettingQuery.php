@@ -19,7 +19,7 @@ class UserSettingQuery extends ActiveQuery
      */
     public function active()
     {
-        return $this->andWhere(['status' => UserSettingModel::STATUS_ACTIVE]);
+        return $this->andWhere(['status' => TargetSettingModel::STATUS_ACTIVE]);
     }
 
     /**
@@ -29,6 +29,6 @@ class UserSettingQuery extends ActiveQuery
      */
     public function inactive()
     {
-        return $this->andWhere(['status' => UserSettingModel::STATUS_ACTIVE]);
+        return $this->andWhere(['status' => TargetSettingModel::STATUS_ACTIVE]);
     }
 }

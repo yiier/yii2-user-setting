@@ -17,7 +17,7 @@ class UserSetting extends \yii\base\Component
     /**
      * @var string setting model class name
      */
-    public $modelClass = 'yiier\userSetting\models\UserSettingModel';
+    public $modelClass = 'yiier\userSetting\models\TargetSettingModel';
     /**
      * @var Cache|array|string the cache used to improve RBAC performance. This can be one of the followings:
      *
@@ -33,7 +33,7 @@ class UserSetting extends \yii\base\Component
      */
     public $cacheKey = 'yiier-user-setting';
     /**
-     * @var \yiier\userSetting\models\UserSettingModel setting model
+     * @var \yiier\userSetting\models\TargetSettingModel setting model
      */
     protected $model;
     /**

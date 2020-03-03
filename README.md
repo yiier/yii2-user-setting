@@ -62,7 +62,7 @@ To use the Setting Component, you need to configure the components array in your
 ```php
 'components' => [
     'userSetting' => [
-        'class' => 'yiier\userSetting\UserSetting',
+        'class' => 'yiier\userSetting\TargetSetting',
     ],
 ],
 ```
