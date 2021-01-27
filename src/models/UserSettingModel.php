@@ -99,7 +99,7 @@ class UserSettingModel extends \yii\db\ActiveRecord
     public function afterDelete()
     {
         parent::afterDelete();
-        Yii::$app->userSetting->invalidateCache();
+        Yii::$app->userSetting->invalidateCache($this->user_id);
     }
 
     /**
@@ -108,24 +108,24 @@ class UserSettingModel extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        Yii::$app->userSetting->invalidateCache();
+        Yii::$app->userSetting->invalidateCache($this->user_id);
     }
 
     /**
      * Return array of settings
      *
+     * @param int $userId
      * @return array
      */
-    public function getSettings(): array
+    public function getSettings(int $userId): array
     {
         $result = [];
-        $settings = static::find()->active()->asArray()->all();
+        $settings = static::find()->where(['user_id' => $userId])->active()->asArray()->all();
         foreach ($settings as $setting) {
-            $userId = $setting['user_id'];
             $key = $setting['key'];
             $settingOptions = [
                 'type' => $setting['type'],
-                'value' => $setting['value'],
+                'value' => $setting['type'] === 'boolean' ? (bool)$setting['value'] : $setting['value'],
                 'description' => $setting['description']
             ];
             if (isset($result[$userId][$key])) {
@@ -199,7 +199,8 @@ class UserSettingModel extends \yii\db\ActiveRecord
      */
     public function activateSetting($key, $userId = 0): bool
     {
-        $model = static::find()->where(['user_id' => $userId, 'key' => $key])->limit(1)->one();
+        /** @var self $model */
+        $model = self::find()->where(['user_id' => $userId, 'key' => $key])->limit(1)->one();
         if ($model && $model->status === self::STATUS_INACTIVE) {
             $model->status = self::STATUS_ACTIVE;
             return $model->save(true, ['status']);
@@ -217,7 +218,8 @@ class UserSettingModel extends \yii\db\ActiveRecord
      */
     public function deactivateSetting($key, $userId = 0): bool
     {
-        $model = static::find()->where(['user_id' => $userId, 'key' => $key])->limit(1)->one();
+        /** @var self $model */
+        $model = self::find()->where(['user_id' => $userId, 'key' => $key])->limit(1)->one();
         if ($model && $model->status === self::STATUS_ACTIVE) {
             $model->status = self::STATUS_INACTIVE;
             return $model->save(true, ['status']);

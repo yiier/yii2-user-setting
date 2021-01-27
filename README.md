@@ -102,7 +102,7 @@ $setting->removeAll(Yii::$app->user->id);
 // Get's all values in the specific section.
 $setting->getAllByUserId(Yii::$app->user->id);
 
-$setting->invalidateCache(); // automatically called on set(), remove();
+$setting->invalidateCache(Yii::$app->user->id); // automatically called on set(), remove();
 ```
 
 UserSettingAction

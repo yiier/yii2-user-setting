@@ -61,14 +61,14 @@ class UserSetting extends \yii\base\Component
     /**
      * Get's all values by user id.
      *
-     * @param string $userId
+     * @param int $userId
      * @param null $default
      *
      * @return mixed
      */
-    public function getAllByUserId($userId, $default = null)
+    public function getAllByUserId(int $userId, $default = null)
     {
-        $items = $this->getSettingsConfig();
+        $items = $this->getSettingsConfig($userId);
         if (isset($items[$userId])) {
             $this->setting = ArrayHelper::getColumn($items[$userId], 'value');
         } else {
@@ -86,9 +86,9 @@ class UserSetting extends \yii\base\Component
      *
      * @return mixed
      */
-    public function get($key, $userId = 0, $default = null)
+    public function get(string $key, $userId = 0, $default = null)
     {
-        $items = $this->getSettingsConfig();
+        $items = $this->getSettingsConfig($userId);
         if (isset($items[$userId][$key])) {
             return ArrayHelper::getValue($items[$userId][$key], 'value');
         }
@@ -108,7 +108,7 @@ class UserSetting extends \yii\base\Component
     public function set($key, $value, $userId = 0, $description = ''): bool
     {
         if ($this->model->setSetting($key, $value, $userId, $description)) {
-            if ($this->invalidateCache()) {
+            if ($this->invalidateCache($userId)) {
                 return true;
             }
         }
@@ -139,7 +139,7 @@ class UserSetting extends \yii\base\Component
     public function remove($key, $userId = 0): bool
     {
         if ($this->model->removeSetting($key, $userId)) {
-            if ($this->invalidateCache()) {
+            if ($this->invalidateCache($userId)) {
                 return true;
             }
         }
@@ -184,19 +184,21 @@ class UserSetting extends \yii\base\Component
     /**
      * Returns the settings config
      *
+     * @param int $userId
      * @return array
      */
-    protected function getSettingsConfig(): array
+    protected function getSettingsConfig(int $userId): array
     {
         if (!$this->cache instanceof Cache) {
-            $this->items = $this->model->getSettings();
+            $this->items = $this->model->getSettings($userId);
         } else {
-            $cacheItems = $this->cache->get($this->cacheKey);
+            $cacheKey = "{$this->cacheKey}:{$userId}";
+            $cacheItems = $this->cache->get($cacheKey);
             if (!empty($cacheItems)) {
                 $this->items = $cacheItems;
             } else {
-                $this->items = $this->model->getSettings();
-                $this->cache->set($this->cacheKey, $this->items);
+                $this->items = $this->model->getSettings($userId);
+                $this->cache->set($cacheKey, $this->items);
             }
         }
         return $this->items;
@@ -205,12 +207,14 @@ class UserSetting extends \yii\base\Component
     /**
      * Invalidate the cache
      *
+     * @param $userId
      * @return bool
      */
-    public function invalidateCache(): bool
+    public function invalidateCache($userId): bool
     {
         if ($this->cache !== null) {
-            $this->cache->delete($this->cacheKey);
+            $cacheKey = "{$this->cacheKey}:{$userId}";
+            $this->cache->delete($cacheKey);
             $this->items = null;
         }
         return true;
