@@ -2,9 +2,9 @@ User Settings For Yii2
 ======================
 User Settings For Yii2
 
-[![Latest Stable Version](https://poser.pugx.org/yiier/yii2-user-setting/v/stable)](https://packagist.org/packages/yiier/yii2-user-setting) 
-[![Total Downloads](https://poser.pugx.org/yiier/yii2-user-setting/downloads)](https://packagist.org/packages/yiier/yii2-user-setting) 
-[![Latest Unstable Version](https://poser.pugx.org/yiier/yii2-user-setting/v/unstable)](https://packagist.org/packages/yiier/yii2-user-setting) 
+[![Latest Stable Version](https://poser.pugx.org/yiier/yii2-user-setting/v/stable)](https://packagist.org/packages/yiier/yii2-user-setting)
+[![Total Downloads](https://poser.pugx.org/yiier/yii2-user-setting/downloads)](https://packagist.org/packages/yiier/yii2-user-setting)
+[![Latest Unstable Version](https://poser.pugx.org/yiier/yii2-user-setting/v/unstable)](https://packagist.org/packages/yiier/yii2-user-setting)
 [![License](https://poser.pugx.org/yiier/yii2-user-setting/license)](https://packagist.org/packages/yiier/yii2-user-setting)
 
 Installation
@@ -34,12 +34,9 @@ Configuration
 
 Before usage this extension, we'll also need to prepare the database.
 
-
 ```
 php yii migrate --migrationPath=@yiier/userSetting/migrations/
 ```
-
-
 
 ### Module Setup
 
@@ -54,7 +51,6 @@ To access the module, you need to configure the modules array in your applicatio
 
 ```
 
-
 Component Setup
 
 To use the Setting Component, you need to configure the components array in your application configuration:
@@ -62,7 +58,7 @@ To use the Setting Component, you need to configure the components array in your
 ```php
 'components' => [
     'userSetting' => [
-        'class' => 'yiier\userSetting\TargetSetting',
+        'class' => 'yiier\userSetting\UserSetting',
     ],
 ],
 ```
@@ -108,7 +104,6 @@ $setting->getAllByUserId(Yii::$app->user->id);
 
 $setting->invalidateCache(); // automatically called on set(), remove();
 ```
-
 
 UserSettingAction
 -----
@@ -160,7 +155,6 @@ class SiteForm extends Model
 
 ### Views:
 
-
 ```php
 <?php $form = ActiveForm::begin(['id' => 'site-settings-form']); ?>
 
@@ -191,7 +185,6 @@ public function actions()
     ];
 }
 ```
-
 
 Reference
 -----

@@ -86,11 +86,11 @@ class UserSettingModel extends \yii\db\ActiveRecord
     /**
      * Creates an [[ActiveQueryInterface]] instance for query purpose.
      *
-     * @return TargetSettingQuery
+     * @return UserSettingQuery
      */
-    public static function find(): TargetSettingQuery
+    public static function find(): UserSettingQuery
     {
-        return new TargetSettingQuery(get_called_class());
+        return new UserSettingQuery(get_called_class());
     }
 
     /**
