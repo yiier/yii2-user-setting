@@ -172,7 +172,7 @@ class UserSettingModel extends \yii\db\ActiveRecord
      */
     public function removeSetting($key, $userId = 0)
     {
-        if (!$model = static::find()->where(['user_id' => $userId, 'key' => $key])->limit(1)->one()) {
+        if ($model = static::find()->where(['user_id' => $userId, 'key' => $key])->limit(1)->one()) {
             return $model->delete();
         }
         return false;
