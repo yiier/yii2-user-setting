@@ -150,11 +150,16 @@ class UserSetting extends \yii\base\Component
      * Remove all settings
      *
      * @param int $userId
-     * @return int
+     * @return bool
      */
-    public function removeAll($userId = 0): int
+    public function removeAll(int $userId = 0): bool
     {
-        return $this->model->removeAllSettings($userId);
+        if ($this->model->removeAllSettings($userId)) {
+            if ($this->invalidateCache($userId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
